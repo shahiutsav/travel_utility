@@ -2,10 +2,22 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:travel_utility/common/models/travel_data/entry.dart';
 
 class HandleStorage {
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/travel_data.json');
+  }
+
   Future<void> createInitialData() async {
-    final file = File('${(await getApplicationDocumentsDirectory()).path}/travel_data.json');
+    final file = await _localFile;
 
     if (!file.existsSync()) {
       final initialData = {
@@ -17,24 +29,29 @@ class HandleStorage {
     }
   }
 
-  void addEntry({
-    required String distance,
-    required DateTime date,
-    required String note,
-  }) async {
-    final file = File('${(await getApplicationDocumentsDirectory()).path}/travel_data.json');
+  Future<void> addEntry(
+    Entry entry,
+  ) async {
+    final file = await _localFile;
     final contents = await file.readAsString();
     final data = json.decode(contents);
 
-    final newEntry = {
-      "uuid": "",
-      "distance": distance,
-      "date": date.toIso8601String(),
-      "note": note,
-    };
-
-    data['db']['entries'].add(newEntry);
+    data['db']['entries'].add(entry);
     final jsonStr = json.encode(data);
     await file.writeAsString(jsonStr);
+  }
+
+  Future<List<Entry>> readTravelData() async {
+    List<Entry> travelData = [];
+    final file = await _localFile;
+    final contents = await file.readAsString();
+    final data = json.decode(contents);
+    final entriesData = data['db']['entries'];
+
+    for (var entryData in entriesData) {
+      final entry = Entry.fromJson(entryData);
+      travelData.add(entry);
+    }
+    return travelData;
   }
 }
