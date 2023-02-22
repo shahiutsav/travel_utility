@@ -1,26 +1,32 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:travel_utility/common/models/travel_data/entry.dart';
 
 class TravelCard extends StatelessWidget {
-  TravelCard({
+  const TravelCard({
     super.key,
     required this.dayString,
     required this.monthName,
     required this.entry,
   });
 
-  final List<Color> colors = [
-    const Color(0xFF01a3a4),
-    const Color(0xFFff9f43),
-    const Color(0xFF54a0ff),
-    const Color(0xFFee5253),
-    const Color(0xFF5f27cd),
-    const Color(0xFF0abde3),
-    const Color(0xFF10ac84),
-    const Color(0xFF576574),
+  static const List<Color> kColors = [
+    Color(0xFF01a3a4),
+    Color(0xFFff9f43),
+    Color(0xFF54a0ff),
+    Color(0xFFee5253),
+    Color(0xFF5f27cd),
+    Color(0xFF0abde3),
+    Color(0xFF10ac84),
+    Color(0xFF576574),
   ];
+
+  static const double kContainerWidth = 3;
+  static const double kMinHeight = 0.8;
+  static const double kMaxHeight = 1;
+  static const double kBorderWidth = 4;
+  static const double kBorderRadius = 20;
+  static const double kNoteWidth = 2;
+  static const double kNoteFontSize = 14;
 
   final String dayString;
   final String monthName;
@@ -28,17 +34,17 @@ class TravelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Random random = Random();
+    final int randomIndex = entry.hashCode % kColors.length;
 
     // Generate a random color
-    final Color cardColor = colors[random.nextInt(colors.length)];
+    final Color cardColor = kColors[randomIndex];
 
     return SizedBox(
       height: 150.0,
       width: double.infinity,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          double containerSize = constraints.maxWidth / 3;
+          double containerSize = constraints.maxWidth / kContainerWidth;
           return Stack(
             children: [
               Positioned(
@@ -46,10 +52,10 @@ class TravelCard extends StatelessWidget {
                 right: 10,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                    minHeight: containerSize * 0.8, // Set the minimum height
+                    minHeight: containerSize * kMinHeight, // Set the minimum height
                     minWidth: containerSize, // Set the minimum width
-                    maxHeight: containerSize * 1, // Set the maximum height
-                    maxWidth: containerSize * 2.75, // Set the maximum width
+                    maxHeight: containerSize * kMaxHeight, // Set the maximum height
+                    maxWidth: containerSize * (kContainerWidth - 0.25), // Set the maximum width
                   ),
                   child: Container(
                     height: MediaQuery.of(context).size.width / 4.5,
@@ -58,9 +64,9 @@ class TravelCard extends StatelessWidget {
                       color: cardColor,
                       border: Border.all(
                         color: Colors.black,
-                        width: 4,
+                        width: kBorderWidth,
                       ),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(kBorderRadius),
                     ),
                   ),
                 ),
@@ -70,10 +76,10 @@ class TravelCard extends StatelessWidget {
                 right: 21,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
-                    minHeight: containerSize * 0.8, // Set the minimum height
+                    minHeight: containerSize * kMinHeight, // Set the minimum height
                     minWidth: containerSize, // Set the minimum width
-                    maxHeight: containerSize * 1, // Set the maximum height
-                    maxWidth: containerSize * 2.75, // Set the maximum width
+                    maxHeight: containerSize * kMaxHeight, // Set the maximum height
+                    maxWidth: containerSize * (kContainerWidth - 0.25), // Set the maximum width
                   ),
                   child: Container(
                     height: MediaQuery.of(context).size.width / 4.5,
@@ -81,9 +87,9 @@ class TravelCard extends StatelessWidget {
                       color: Colors.white,
                       border: Border.all(
                         color: Colors.black,
-                        width: 4,
+                        width: kBorderWidth,
                       ),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(kBorderRadius),
                     ),
                     padding: const EdgeInsets.all(10),
                     child: Row(
@@ -130,7 +136,7 @@ class TravelCard extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             SizedBox(
-                              width: containerSize * 2,
+                              width: containerSize * kNoteWidth,
                               child: Text(
                                 'Note: ${entry.note}',
                                 maxLines: 1,
