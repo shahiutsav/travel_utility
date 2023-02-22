@@ -4,6 +4,7 @@ import 'package:travel_utility/common/models/travel_data/entry.dart';
 import 'package:travel_utility/common/services/handle_storage.dart';
 import 'package:travel_utility/features/travels/screens/add_travel_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:travel_utility/features/travels/widgets/travel_card.dart';
 import 'package:travel_utility/providers/travels/entry_provider.dart';
 
 class DisplayTravelsScreen extends StatelessWidget {
@@ -33,68 +34,10 @@ class DisplayTravelsScreen extends StatelessWidget {
             }
 
             final String monthName = DateFormat.MMM().format(date);
-            return Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 4,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      Column(
-                        children: [
-                          Text(
-                            dayString,
-                            style: TextStyle(
-                              fontSize: MediaQuery.of(context).size.width / 18,
-                            ),
-                          ),
-                          Text(
-                            monthName,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: MediaQuery.of(context).size.width / 28,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 15),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '${entry.distance!} km',
-                            style: TextStyle(
-                              fontSize: MediaQuery.of(context).size.width / 24,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 1.4,
-                            child: Text(
-                              'Note: ${entry.note}',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontStyle: FontStyle.italic,
-                                color: Colors.black45,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 15)
-              ],
+            return TravelCard(
+              dayString: dayString,
+              monthName: monthName,
+              entry: entry,
             );
           },
         ),
