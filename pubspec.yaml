@@ -4,35 +4,36 @@ publish_to: "none"
 version: 0.1.0
 
 environment:
-    sdk: ">=2.19.2 <3.0.0"
+  sdk: ">=2.19.2 <3.0.0"
 
 dependencies:
-    another_flushbar: ^1.12.29
-    flutter:
-        sdk: flutter
-    intl: ^0.18.0
-    path_provider: ^2.0.12
-    provider: ^6.0.5
+  another_flushbar: ^1.12.29
+  flutter:
+    sdk: flutter
+  intl: ^0.18.0
+  path_provider: ^2.0.12
+  provider: ^6.0.5
+  uuid: ^3.0.7
 
 dev_dependencies:
-    flutter_lints: ^2.0.0
-    flutter_test:
-        sdk: flutter
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
 
 flutter:
-    uses-material-design: true
+  uses-material-design: true
 
-    assets:
-        - assets/
+  assets:
+    - assets/
 
-    fonts:
-        - family: BebasNeue
-          fonts:
-              - asset: assets/fonts/BebasNeue-Regular.ttf
-        - family: Lato
-          fonts:
-              - asset: assets/fonts/Lato-Regular.ttf
-              - asset: assets/fonts/Lato-Black.ttf
-                weight: 900
-              - asset: assets/fonts/Lato-Bold.ttf
-                weight: 700
+  fonts:
+    - family: BebasNeue
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
+        - asset: assets/fonts/Lato-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Lato-Bold.ttf
+          weight: 700

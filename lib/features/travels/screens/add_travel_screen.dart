@@ -5,6 +5,7 @@ import 'package:travel_utility/common/services/handle_storage.dart';
 import 'package:travel_utility/common/widgets/date_picker_form_field.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:travel_utility/providers/travels/entry_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTravelScreen extends StatelessWidget {
   static const String routeName = '/add_travel';
@@ -37,10 +38,13 @@ class AddTravelScreen extends StatelessWidget {
       required DateTime date,
       required String note,
     }) async {
+      const uuid = Uuid();
+      var newUuid = uuid.v1();
       final newEntry = Entry(
         distance: double.parse(distanceTraveled),
         date: date.toIso8601String(),
         note: note,
+        uuid: newUuid,
       );
       final entryProvider = Provider.of<EntryProvider>(context, listen: false);
       await saveData.addEntry(newEntry);

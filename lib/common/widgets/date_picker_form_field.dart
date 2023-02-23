@@ -22,6 +22,9 @@ class _DatePickerFormFieldState extends State<DatePickerFormField> {
       initialDate: selectedDate,
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
+      selectableDayPredicate: (DateTime date) => date.isBefore(
+        DateTime.now(),
+      ),
     );
 
     if (picked != null && picked != selectedDate) {

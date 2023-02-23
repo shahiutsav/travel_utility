@@ -14,6 +14,12 @@ class EntryProvider extends ChangeNotifier {
     return [..._entries];
   }
 
+  List<Entry> getEntriesSortedByDate() {
+    List<Entry> entries = [..._entries];
+    entries.sort((a, b) => DateTime.parse(b.date!).compareTo(DateTime.parse(a.date!)));
+    return entries;
+  }
+
   void addEntry(Entry entry) async {
     _entries.add(entry);
     notifyListeners();

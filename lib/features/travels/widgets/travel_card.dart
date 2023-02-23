@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:travel_utility/common/models/travel_data/entry.dart';
+import 'package:travel_utility/features/travel_details/screens/travel_detail_screen.dart';
 
 class TravelCard extends StatelessWidget {
   const TravelCard({
     super.key,
-    required this.dayString,
-    required this.monthName,
     required this.entry,
   });
 
@@ -28,8 +28,6 @@ class TravelCard extends StatelessWidget {
   static const double kNoteWidth = 2;
   static const double kNoteFontSize = 14;
 
-  final String dayString;
-  final String monthName;
   final Entry entry;
 
   @override
@@ -38,6 +36,19 @@ class TravelCard extends StatelessWidget {
 
     // Generate a random color
     final Color cardColor = kColors[randomIndex];
+
+    final dateString = entry.date!;
+    DateTime date = DateTime.parse(dateString);
+    final int day = date.day;
+    var dayString = day.toString();
+    var numberOfZeroRequired = 2 - dayString.length;
+
+    while (numberOfZeroRequired != 0) {
+      dayString = '0$dayString';
+      numberOfZeroRequired--;
+    }
+
+    final String monthName = DateFormat.MMM().format(date);
 
     return SizedBox(
       height: 150.0,
@@ -81,75 +92,82 @@ class TravelCard extends StatelessWidget {
                     maxHeight: containerSize * kMaxHeight, // Set the maximum height
                     maxWidth: containerSize * (kContainerWidth - 0.25), // Set the maximum width
                   ),
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 4.5,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.black,
-                        width: kBorderWidth,
-                      ),
-                      borderRadius: BorderRadius.circular(kBorderRadius),
+                  child: InkWell(
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      TravelDetailScreen.routerName,
+                      arguments: entry.uuid,
                     ),
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 10),
-                        Column(
-                          children: [
-                            Text(
-                              dayString,
-                              style: TextStyle(
-                                color: cardColor,
-                                fontFamily: 'BebasNeue',
-                                fontSize: MediaQuery.of(context).size.width / 12,
-                              ),
-                            ),
-                            Text(
-                              monthName.toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: MediaQuery.of(context).size.width / 28,
-                              ),
-                            ),
-                          ],
+                    child: Container(
+                      height: MediaQuery.of(context).size.width / 4.5,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: kBorderWidth,
                         ),
-                        const SizedBox(width: 15),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  '${entry.distance!}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: 'Lato',
-                                    fontSize: MediaQuery.of(context).size.width / 18,
+                        borderRadius: BorderRadius.circular(kBorderRadius),
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 10),
+                          Column(
+                            children: [
+                              Text(
+                                dayString,
+                                style: TextStyle(
+                                  color: cardColor,
+                                  fontFamily: 'BebasNeue',
+                                  fontSize: MediaQuery.of(context).size.width / 12,
+                                ),
+                              ),
+                              Text(
+                                monthName.toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: MediaQuery.of(context).size.width / 28,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 15),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    '${entry.distance!}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Lato',
+                                      fontSize: MediaQuery.of(context).size.width / 18,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text('km'),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              SizedBox(
+                                width: containerSize * kNoteWidth,
+                                child: Text(
+                                  'Note: ${entry.note}',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.black45,
                                   ),
                                 ),
-                                const SizedBox(width: 5),
-                                const Text('km'),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            SizedBox(
-                              width: containerSize * kNoteWidth,
-                              child: Text(
-                                'Note: ${entry.note}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.black45,
-                                ),
                               ),
-                            ),
-                          ],
-                        )
-                      ],
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
