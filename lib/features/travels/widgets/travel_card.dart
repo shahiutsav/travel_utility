@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:travel_utility/common/models/travel_data/entry.dart';
+import 'package:travel_utility/common/utils/date_util.dart';
 import 'package:travel_utility/features/travel_details/screens/travel_detail_screen.dart';
 
 class TravelCard extends StatelessWidget {
@@ -38,17 +38,8 @@ class TravelCard extends StatelessWidget {
     final Color cardColor = kColors[randomIndex];
 
     final dateString = entry.date!;
-    DateTime date = DateTime.parse(dateString);
-    final int day = date.day;
-    var dayString = day.toString();
-    var numberOfZeroRequired = 2 - dayString.length;
-
-    while (numberOfZeroRequired != 0) {
-      dayString = '0$dayString';
-      numberOfZeroRequired--;
-    }
-
-    final String monthName = DateFormat.MMM().format(date);
+    final dayString = DateUtil.getDay(dateString);
+    final String monthName = DateUtil.getMonthName(dateString);
 
     return SizedBox(
       height: 150.0,
