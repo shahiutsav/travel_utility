@@ -54,4 +54,27 @@ class HandleStorage {
     }
     return travelData;
   }
+
+  Future<void> deleteEntry(
+    Entry entry,
+  ) async {
+    final file = await _localFile;
+    final contents = await file.readAsString();
+    final data = json.decode(contents);
+
+    final entriesData = data['db']['entries'];
+    final entries = [];
+
+    for (var entryData in entriesData) {
+      final entry = Entry.fromJson(entryData);
+      entries.add(entry);
+    }
+    entries.removeWhere(
+      (element) => element.uuid == entry.uuid,
+    );
+    data['db']['entries'] = entries;
+
+    final jsonStr = json.encode(data);
+    await file.writeAsString(jsonStr);
+  }
 }

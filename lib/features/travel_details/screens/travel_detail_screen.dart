@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_utility/common/models/travel_data/entry.dart';
@@ -16,10 +17,20 @@ class TravelDetailScreen extends StatelessWidget {
   final String entryUuid;
   final Color cardColor;
 
+  Future<void> deleteTravel({
+    required BuildContext context,
+    required Entry entry,
+  }) async {
+    Provider.of<EntryProvider>(context, listen: false).deleteEntry(entry).then((_) {
+      Navigator.pop(context);
+      showFlushbar(context);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Entry loadedEntry =
-        Provider.of<EntryProvider>(context).entries.firstWhere((entry) => entry.uuid == entryUuid);
+        Provider.of<EntryProvider>(context, listen: false).entries.firstWhere((entry) => entry.uuid == entryUuid);
 
     final dateString = loadedEntry.date!;
     final dayString = DateUtil.getDay(dateString);
@@ -35,7 +46,29 @@ class TravelDetailScreen extends StatelessWidget {
           child: Stack(
             children: [
               _displayDate(mediaQuery.width, dayString, monthName),
-              _displayButtons(),
+              Positioned(
+                top: 20,
+                right: 20,
+                child: Column(
+                  children: [
+                    CustomButton(
+                        icon: Icons.delete,
+                        color: Colors.red.shade300,
+                        onTap: () {
+                          deleteTravel(
+                            context: context,
+                            entry: loadedEntry,
+                          );
+                        }),
+                    const SizedBox(height: 18),
+                    CustomButton(
+                      icon: Icons.edit,
+                      color: Colors.blue.shade300,
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+              ),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -61,28 +94,6 @@ class TravelDetailScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Positioned _displayButtons() {
-    return Positioned(
-      top: 20,
-      right: 20,
-      child: Column(
-        children: [
-          CustomButton(
-            icon: Icons.delete,
-            color: Colors.red.shade300,
-            onTap: () {},
-          ),
-          const SizedBox(height: 18),
-          CustomButton(
-            icon: Icons.edit,
-            color: Colors.blue.shade300,
-            onTap: () {},
-          ),
-        ],
       ),
     );
   }
@@ -175,4 +186,19 @@ class CustomButton extends StatelessWidget {
       ),
     );
   }
+}
+
+void showFlushbar(BuildContext context) {
+  Flushbar(
+    message: 'The data has been deleted',
+    icon: Icon(
+      Icons.delete_forever,
+      size: 28.0,
+      color: Colors.red.shade300,
+    ),
+    margin: const EdgeInsets.all(8),
+    borderRadius: BorderRadius.circular(8),
+    leftBarIndicatorColor: Colors.red.shade300,
+    duration: const Duration(seconds: 3),
+  ).show(context);
 }

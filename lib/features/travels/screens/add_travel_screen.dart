@@ -29,28 +29,27 @@ class AddTravelScreen extends StatelessWidget {
     _noteController.clear();
   }
 
+  Future<void> saveTravel({
+    required String distanceTraveled,
+    required DateTime date,
+    required String note,
+    required BuildContext context,
+  }) async {
+    const uuid = Uuid();
+    var newUuid = uuid.v1();
+    final newEntry = Entry(
+      distance: double.parse(distanceTraveled),
+      date: date.toIso8601String(),
+      note: note,
+      uuid: newUuid,
+    );
+    final entryProvider = Provider.of<EntryProvider>(context, listen: false);
+    entryProvider.addEntry(newEntry);
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime dateToSave = DateTime.now();
-
-    Future<void> saveTravel({
-      required String distanceTraveled,
-      required DateTime date,
-      required String note,
-    }) async {
-      const uuid = Uuid();
-      var newUuid = uuid.v1();
-      final newEntry = Entry(
-        distance: double.parse(distanceTraveled),
-        date: date.toIso8601String(),
-        note: note,
-        uuid: newUuid,
-      );
-      final entryProvider = Provider.of<EntryProvider>(context, listen: false);
-      await saveData.addEntry(newEntry);
-      entryProvider.addEntry(newEntry);
-    }
-
     return Scaffold(
       body: GestureDetector(
         onTap: _unFocus,
@@ -90,6 +89,7 @@ class AddTravelScreen extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     saveTravel(
+                      context: context,
                       distanceTraveled: _distanceTraveledController.text,
                       date: dateToSave,
                       note: _noteController.text,

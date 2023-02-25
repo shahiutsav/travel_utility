@@ -21,6 +21,7 @@ class EntryProvider extends ChangeNotifier {
   }
 
   void addEntry(Entry entry) async {
+    await handleStorage.addEntry(entry);
     _entries.add(entry);
     notifyListeners();
   }
@@ -30,8 +31,9 @@ class EntryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeEntry(Entry entry) {
-    _entries.remove(entry);
+  Future<void> deleteEntry(Entry entry) async {
+    await handleStorage.deleteEntry(entry);
+    _entries.removeWhere((entry) => entry.uuid == entry.uuid);
     notifyListeners();
   }
 }
