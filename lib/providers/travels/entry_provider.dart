@@ -31,9 +31,9 @@ class EntryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteEntry(Entry entry) async {
-    await handleStorage.deleteEntry(entry);
-    _entries.removeWhere((entry) => entry.uuid == entry.uuid);
+  Future<void> deleteEntry(Entry entryToDelete) async {
+    await handleStorage.deleteEntry(entryToDelete);
+    _entries.removeWhere((entry) => entry.uuid == entryToDelete.uuid);
     notifyListeners();
   }
 }

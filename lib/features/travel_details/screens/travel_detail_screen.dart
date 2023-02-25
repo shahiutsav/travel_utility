@@ -29,8 +29,18 @@ class TravelDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Entry loadedEntry =
-        Provider.of<EntryProvider>(context, listen: false).entries.firstWhere((entry) => entry.uuid == entryUuid);
+    final loadedEntry = Provider.of<EntryProvider>(
+      context,
+    ).entries.firstWhere(
+      (entry) => entry.uuid == entryUuid,
+      orElse: () {
+        return Entry(
+          date: DateTime.now().toString(),
+          distance: 0,
+          note: '',
+        );
+      },
+    );
 
     final dateString = loadedEntry.date!;
     final dayString = DateUtil.getDay(dateString);
