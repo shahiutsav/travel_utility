@@ -11,12 +11,15 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (_) => AddTravelScreen(),
       );
 
-    case TravelDetailScreen.routerName:
-      final String entryUuid = routeSettings.arguments as String;
+    case TravelDetailScreen.routeName:
+      final Map<String, dynamic> args = routeSettings.arguments as Map<String, dynamic>;
+      final String entryUuid = args['entryUuid'];
+      final Color cardColor = args['cardColor'];
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (_) => TravelDetailScreen(
           entryUuid: entryUuid,
+          cardColor: cardColor,
         ),
       );
 

@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_utility/common/models/travel_data/entry.dart';
 import 'package:travel_utility/common/utils/date_util.dart';
+import 'package:travel_utility/common/widgets/stacked_card.dart';
 import 'package:travel_utility/providers/travels/entry_provider.dart';
 
 class TravelDetailScreen extends StatelessWidget {
-  static const routerName = '/travel-detail';
+  static const routeName = '/travel-detail';
   const TravelDetailScreen({
     super.key,
     required this.entryUuid,
+    required this.cardColor,
   });
 
   final String entryUuid;
+  final Color cardColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +27,41 @@ class TravelDetailScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  Text(dayString),
-                  Text(monthName),
-                ],
+        body: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - 1,
+          child: Stack(
+            children: [
+              Positioned(
+                top: 20,
+                left: 20,
+                child: StackedCard(
+                  color: cardColor,
+                  width: MediaQuery.of(context).size.width / 5,
+                  height: MediaQuery.of(context).size.width / 4,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        dayString,
+                        style: TextStyle(
+                          color: cardColor,
+                          fontFamily: 'BebasNeue',
+                          fontSize: MediaQuery.of(context).size.width / 12,
+                        ),
+                      ),
+                      Text(
+                        monthName.toUpperCase(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.width / 28,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Expanded(
-              child: Center(
+              Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -59,8 +83,8 @@ class TravelDetailScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -17,7 +17,7 @@ class DisplayTravelsScreen extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(18.0),
-        child: ListView.builder(
+        child: ListView.separated(
           itemCount: entries.length,
           itemBuilder: (context, index) {
             final Entry entry = entries[index];
@@ -25,6 +25,7 @@ class DisplayTravelsScreen extends StatelessWidget {
               entry: entry,
             );
           },
+          separatorBuilder: (context, index) => const SizedBox(height: 20),
         ),
       ),
       floatingActionButton: FloatingActionButton(
