@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 class StackedCard extends StatelessWidget {
   const StackedCard({
-    this.height = 200,
-    this.width = 200,
+    this.height = 100,
+    this.width = 100,
     this.color = Colors.amber,
     this.child,
     this.enableTap = false,
     this.onTap,
+    this.borderRadius = 12,
     super.key,
   });
 
@@ -17,7 +18,8 @@ class StackedCard extends StatelessWidget {
   final Color color;
   final bool enableTap;
   final VoidCallback? onTap;
-  static const double paddingSize = 12.0;
+  final double borderRadius;
+  static const double paddingSize = 8.0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +51,9 @@ class StackedCard extends StatelessWidget {
                       color: color,
                       border: Border.all(
                         color: Colors.black,
-                        width: 4,
+                        width: 3,
                       ),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(borderRadius),
                     ),
                   ),
                 ),
@@ -83,9 +85,9 @@ class StackedCard extends StatelessWidget {
         color: Colors.white,
         border: Border.all(
           color: Colors.black,
-          width: 4,
+          width: 3,
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: child,
     );

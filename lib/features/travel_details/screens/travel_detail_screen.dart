@@ -24,68 +24,154 @@ class TravelDetailScreen extends StatelessWidget {
     final dateString = loadedEntry.date!;
     final dayString = DateUtil.getDay(dateString);
     final String monthName = DateUtil.getMonthName(dateString);
+    final String note = loadedEntry.note!;
+    final mediaQuery = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - 1,
+          width: mediaQuery.width,
+          height: mediaQuery.height - 1,
           child: Stack(
             children: [
-              Positioned(
-                top: 20,
-                left: 20,
-                child: StackedCard(
-                  color: cardColor,
-                  width: MediaQuery.of(context).size.width / 5,
-                  height: MediaQuery.of(context).size.width / 4,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        dayString,
-                        style: TextStyle(
-                          color: cardColor,
-                          fontFamily: 'BebasNeue',
-                          fontSize: MediaQuery.of(context).size.width / 12,
-                        ),
-                      ),
-                      Text(
-                        monthName.toUpperCase(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: MediaQuery.of(context).size.width / 28,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              _displayDate(mediaQuery.width, dayString, monthName),
+              _displayButtons(),
               Center(
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      loadedEntry.distance.toString(),
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width / 5,
-                        fontFamily: 'Lato',
-                        fontWeight: FontWeight.w900,
+                    _displayDistance(loadedEntry, mediaQuery.width),
+                    const SizedBox(height: 28),
+                    SizedBox(
+                      width: mediaQuery.width / 1.6,
+                      child: Text(
+                        "\" $note \"",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: mediaQuery.width / 30,
+                          color: Colors.black54,
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'km',
-                      style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width / 15,
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Positioned _displayButtons() {
+    return Positioned(
+      top: 20,
+      right: 20,
+      child: Column(
+        children: [
+          CustomButton(
+            icon: Icons.delete,
+            color: Colors.red.shade300,
+            onTap: () {},
+          ),
+          const SizedBox(height: 18),
+          CustomButton(
+            icon: Icons.edit,
+            color: Colors.blue.shade300,
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Positioned _displayDate(double mediaQueryWidth, String dayString, String monthName) {
+    return Positioned(
+      top: 20,
+      left: 20,
+      child: StackedCard(
+        color: cardColor,
+        width: mediaQueryWidth / 5,
+        height: mediaQueryWidth / 4,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              dayString,
+              style: TextStyle(
+                color: cardColor,
+                fontFamily: 'BebasNeue',
+                fontSize: mediaQueryWidth / 12,
+              ),
+            ),
+            Text(
+              monthName.toUpperCase(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: mediaQueryWidth / 28,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Center _displayDistance(Entry loadedEntry, double mediaQueryWidth) {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            loadedEntry.distance.toString(),
+            style: TextStyle(
+              fontSize: mediaQueryWidth / 5,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          Text(
+            'km',
+            style: TextStyle(
+              fontSize: mediaQueryWidth / 15,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  const CustomButton({
+    super.key,
+    required this.color,
+    required this.onTap,
+    required this.icon,
+  });
+
+  final Color color;
+  final VoidCallback onTap;
+  final IconData icon;
+
+  final double buttonSize = 70.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return StackedCard(
+      height: buttonSize,
+      width: buttonSize,
+      borderRadius: 100,
+      enableTap: true,
+      color: color,
+      onTap: onTap,
+      child: Icon(
+        icon,
+        size: 35,
+        color: color,
       ),
     );
   }
