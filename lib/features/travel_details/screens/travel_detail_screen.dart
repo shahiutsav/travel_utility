@@ -185,7 +185,7 @@ class CustomButton extends StatelessWidget {
     return StackedCard(
       height: buttonSize,
       width: buttonSize,
-      borderRadius: 100,
+      borderRadius: 30,
       enableTap: true,
       color: color,
       onTap: onTap,
