@@ -1,36 +1,52 @@
 import 'package:flutter/material.dart';
 
 class DatePickerFormField extends StatefulWidget {
-  final String labelText;
-  final Function(DateTime) onDateSelected;
   const DatePickerFormField({
     super.key,
     required this.labelText,
-    required this.onDateSelected,
+    required this.selectedDate,
   });
+
+  final String labelText;
+  final ValueNotifier<DateTime> selectedDate;
 
   @override
   State<DatePickerFormField> createState() => _DatePickerFormFieldState();
 }
 
 class _DatePickerFormFieldState extends State<DatePickerFormField> {
-  DateTime selectedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.selectedDate.addListener(_updateSelectedDate);
+  }
+
+  @override
+  void dispose() {
+    widget.selectedDate.removeListener(_updateSelectedDate);
+    super.dispose();
+  }
+
+  void _updateSelectedDate() {
+    _selectedDate = widget.selectedDate.value;
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: _selectedDate,
       firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
+      lastDate: DateTime.now(),
       selectableDayPredicate: (DateTime date) => date.isBefore(
         DateTime.now(),
       ),
     );
 
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && picked != _selectedDate) {
       setState(() {
-        selectedDate = picked;
-        widget.onDateSelected(selectedDate);
+        widget.selectedDate.value = picked;
       });
     }
   }
@@ -57,7 +73,7 @@ class _DatePickerFormFieldState extends State<DatePickerFormField> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '${selectedDate.toLocal()}'.split(' ')[0],
+              '${_selectedDate.toLocal()}'.split(' ')[0],
               style: TextStyle(
                 fontSize: MediaQuery.of(context).size.width / 28,
               ),

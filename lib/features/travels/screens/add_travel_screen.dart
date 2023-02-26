@@ -22,6 +22,7 @@ class AddTravelScreen extends StatelessWidget {
   final noteFocusNode = FocusNode();
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final _formKey = GlobalKey<FormState>();
+  final ValueNotifier<DateTime> selectedDate = ValueNotifier<DateTime>(DateTime.now());
 
   void _unFocus() {
     distanceTraveledFocusNode.unfocus();
@@ -53,7 +54,6 @@ class AddTravelScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateToSave = DateTime.now();
     return GestureDetector(
       onTap: _unFocus,
       child: Scaffold(
@@ -66,10 +66,7 @@ class AddTravelScreen extends StatelessWidget {
               children: [
                 DatePickerFormField(
                   labelText: 'Select a date',
-                  onDateSelected: (selectedDate) {
-                    saveData.readTravelData();
-                    dateToSave = selectedDate;
-                  },
+                  selectedDate: selectedDate,
                 ),
                 const SizedBox(height: 18),
                 CustomInputField(
@@ -102,7 +99,7 @@ class AddTravelScreen extends StatelessWidget {
                       saveTravel(
                         context: context,
                         distanceTraveled: _distanceTraveledController.text,
-                        date: dateToSave,
+                        date: selectedDate.value,
                         note: _noteController.text,
                       ).then(
                         (_) {
