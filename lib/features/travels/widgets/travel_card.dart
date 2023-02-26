@@ -83,7 +83,7 @@ class TravelCard extends StatelessWidget {
               SizedBox(
                 width: mediaQuery / 1.55,
                 child: Text(
-                  'Note: ${entry.note}',
+                  entry.note!.isEmpty ? '' : 'Note: ${entry.note}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(

@@ -34,6 +34,7 @@ class DisplayTravelsScreen extends StatelessWidget {
         width: 70.0,
         borderRadius: 30,
         enableTap: true,
+        color: Colors.green.shade300,
         onTap: () => Navigator.pushNamed(
           context,
           AddTravelScreen.routeName,

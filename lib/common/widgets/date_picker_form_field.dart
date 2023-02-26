@@ -44,12 +44,24 @@ class _DatePickerFormFieldState extends State<DatePickerFormField> {
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: widget.labelText,
-          border: const OutlineInputBorder(),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              width: 3,
+              color: Colors.black,
+              style: BorderStyle.solid,
+            ),
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('${selectedDate.toLocal()}'.split(' ')[0]),
+            Text(
+              '${selectedDate.toLocal()}'.split(' ')[0],
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width / 28,
+              ),
+            ),
             const Icon(Icons.calendar_today),
           ],
         ),
