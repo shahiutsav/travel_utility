@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_utility/common/models/travel_data/entry.dart';
 import 'package:travel_utility/common/services/handle_storage.dart';
+import 'package:travel_utility/common/utils/helpers.dart';
 import 'package:travel_utility/common/widgets/custom_input_field.dart';
 import 'package:travel_utility/common/widgets/date_picker_form_field.dart';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:travel_utility/common/widgets/stacked_card.dart';
 import 'package:travel_utility/providers/travels/entry_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -109,7 +109,12 @@ class AddTravelScreen extends StatelessWidget {
                           _clearController();
                           _unFocus();
                           Navigator.pop(context);
-                          showFlushbar(context);
+                          showFlushbar(
+                            context: context,
+                            message: 'Data has been saved',
+                            icon: Icons.check,
+                            color: Colors.green,
+                          );
                         },
                       );
                     }
@@ -137,23 +142,4 @@ class AddTravelScreen extends StatelessWidget {
     }
     return false;
   }
-}
-
-void showFlushbar(BuildContext context) {
-  Flushbar(
-    message: 'The data has been saved',
-    icon: const Icon(
-      Icons.check,
-      size: 28.0,
-      color: Colors.green,
-    ),
-    messageColor: Colors.black,
-    borderColor: Colors.black,
-    borderWidth: 3,
-    backgroundColor: Colors.white,
-    margin: const EdgeInsets.all(8),
-    borderRadius: BorderRadius.circular(8),
-    leftBarIndicatorColor: Colors.green,
-    duration: const Duration(seconds: 3),
-  ).show(context);
 }

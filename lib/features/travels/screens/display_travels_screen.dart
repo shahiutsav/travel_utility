@@ -18,16 +18,28 @@ class DisplayTravelsScreen extends StatelessWidget {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(18.0),
-        child: ListView.separated(
-          itemCount: entries.length,
-          itemBuilder: (context, index) {
-            final Entry entry = entries[index];
-            return TravelCard(
-              entry: entry,
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(height: 20),
-        ),
+        child: entries.isEmpty
+            ? Center(
+                child: Text(
+                  'You have no entries yet. Add some.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Lato',
+                    color: Colors.black38,
+                    fontSize: MediaQuery.of(context).size.width / 24,
+                  ),
+                ),
+              )
+            : ListView.separated(
+                itemCount: entries.length,
+                itemBuilder: (context, index) {
+                  final Entry entry = entries[index];
+                  return TravelCard(
+                    entry: entry,
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(height: 20),
+              ),
       ),
       floatingActionButton: StackedCard(
         height: 70.0,

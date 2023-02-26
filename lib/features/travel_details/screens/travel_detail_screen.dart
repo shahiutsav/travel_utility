@@ -1,8 +1,8 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travel_utility/common/models/travel_data/entry.dart';
 import 'package:travel_utility/common/utils/date_util.dart';
+import 'package:travel_utility/common/utils/helpers.dart';
 import 'package:travel_utility/common/widgets/stacked_card.dart';
 import 'package:travel_utility/providers/travels/entry_provider.dart';
 
@@ -23,7 +23,12 @@ class TravelDetailScreen extends StatelessWidget {
   }) async {
     Provider.of<EntryProvider>(context, listen: false).deleteEntry(entry).then((_) {
       Navigator.pop(context);
-      showFlushbar(context);
+      showFlushbar(
+        context: context,
+        message: 'Data has been deleted',
+        icon: Icons.delete,
+        color: Colors.red.shade300,
+      );
     });
   }
 
@@ -196,19 +201,4 @@ class CustomButton extends StatelessWidget {
       ),
     );
   }
-}
-
-void showFlushbar(BuildContext context) {
-  Flushbar(
-    message: 'The data has been deleted',
-    icon: Icon(
-      Icons.delete_forever,
-      size: 28.0,
-      color: Colors.red.shade300,
-    ),
-    margin: const EdgeInsets.all(8),
-    borderRadius: BorderRadius.circular(8),
-    leftBarIndicatorColor: Colors.red.shade300,
-    duration: const Duration(seconds: 3),
-  ).show(context);
 }
